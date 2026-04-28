@@ -1,6 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { testUrls } from '../fixtures/testData';
+import { PreferencesPage } from './PreferencesPage';
 
 export class SearchBooksPage extends BasePage {
   readonly authorInput: Locator;
@@ -34,5 +35,16 @@ export class SearchBooksPage extends BasePage {
 
   async goToAdvancedSearch(): Promise<void> {
     await this.navigate(testUrls.abebooksAdvancedSearch);
+  }
+
+  async openHomeAndDeclinePreferences(preferencesPage: PreferencesPage): Promise<void> {
+    await this.navigate('home');
+    await preferencesPage.clickDecline();
+  }
+
+  async performSearch(author: string, title: string): Promise<void> {
+    await this.fillAuthor(author);
+    await this.fillTitle(title);
+    await this.clickSearch();
   }
 }
