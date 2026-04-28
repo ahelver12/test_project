@@ -2,22 +2,36 @@ import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class SearchBooksPage extends BasePage {
-  readonly logoLabel: Locator;
+  readonly authorInput: Locator;
+  readonly titleInput: Locator;
+  readonly keywordInput: Locator;
+  readonly searchButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.logoLabel = this.page.locator('#logo .sr-only');
+    this.authorInput = this.page.locator('input[name="an"]');
+    this.titleInput = this.page.locator('input[name="tn"]');
+    this.keywordInput = this.page.locator('input[name="kn"]');
+    this.searchButton = this.page.locator("//button[@type='submit' and @class='button-primary']");
   }
 
-  async openHome(): Promise<void> {
-    await this.open('https://www.abebooks.co.uk/');
+  async fillAuthor(text: string): Promise<void> {
+    await this.fill(this.authorInput, text);
   }
 
-  async isOpened(): Promise<boolean> {
-    return (await this.getUrl()).startsWith('https://www.abebooks.co.uk');
+  async fillTitle(text: string): Promise<void> {
+    await this.fill(this.titleInput, text);
   }
 
-  async getLabelText(): Promise<string> {
-    return (await this.getText(this.logoLabel)).trim();
+  async fillKeyword(text: string): Promise<void> {
+    await this.fill(this.keywordInput, text);
+  }
+
+  async clickSearch(): Promise<void> {
+    await this.click(this.searchButton);
+  }
+
+  async goToAdvancedSearch(): Promise<void> {
+    await this.goto('https://www.abebooks.co.uk/servlet/AdvancedSearch');
   }
 }

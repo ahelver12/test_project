@@ -2,9 +2,11 @@ import { Page, Locator } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
+  readonly logoLabel: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.logoLabel = this.page.locator('#logo .sr-only');
   }
 
   async goto(url: string): Promise<void> {
@@ -15,12 +17,24 @@ export class BasePage {
     await this.goto(url);
   }
 
+  async openHome(): Promise<void> {
+    await this.open('https://www.abebooks.co.uk/');
+  }
+
   async getTitle(): Promise<string> {
     return await this.page.title();
   }
 
   async getUrl(): Promise<string> {
     return this.page.url();
+  }
+
+  async isOpened(): Promise<boolean> {
+    return this.page.url().startsWith('https://www.abebooks.co.uk');
+  }
+
+  async getLabelText(): Promise<string> {
+    return (await this.getText(this.logoLabel)).trim();
   }
 
   async getAttribute(selector: string | Locator, attribute: string): Promise<string | null> {

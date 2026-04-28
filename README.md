@@ -8,7 +8,8 @@ A comprehensive test automation framework built with Playwright and JavaScript/T
 ├── src/
 │   ├── pages/
 │   │   ├── BasePage.ts           # Base class for all page objects
-│   │   └── SearchBooksPage.ts    # AbeBooks homepage page object
+│   │   ├── SearchBooksPage.ts    # AbeBooks search page object
+│   │   └── PreferencesPage.ts    # Cookie preferences page object
 │   ├── components/
 │   │   ├── BaseComponent.ts      # Base class for all components
 │   │   └── FormComponents.ts     # Reusable form components (Button, TextField, Checkbox)
