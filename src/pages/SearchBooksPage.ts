@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { testUrls } from '../fixtures/testData';
+import { testUrls, testLabels } from '../fixtures/testData';
 import { PreferencesPage } from './PreferencesPage';
 
 export class SearchBooksPage extends BasePage {
@@ -15,6 +15,7 @@ export class SearchBooksPage extends BasePage {
   readonly textbooksLabel: Locator;
   readonly sellersLabel: Locator;
   readonly startSellingLabel: Locator;
+  readonly sellersPageLabel: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -30,6 +31,7 @@ export class SearchBooksPage extends BasePage {
     this.textbooksLabel = headerSection.locator("//li[@id='text-books']");
     this.sellersLabel = headerSection.locator("//li[@id='hdr-sellers']");
     this.startSellingLabel = headerSection.locator("//li[@id='hdr-sell']");
+    this.sellersPageLabel = this.page.locator("//h1[contains(@class,'sellerSearchTitle')]");
   }
 
   async fillAuthor(text: string): Promise<void> {
@@ -73,6 +75,19 @@ export class SearchBooksPage extends BasePage {
       sellers: await this.isVisible(this.sellersLabel),
       startSelling: await this.isVisible(this.startSellingLabel),
     };
+  }
+
+  async clickOnSellers(): Promise<void> {
+    await this.click(this.sellersLabel);
+  }
+
+  async verifySellersPageOpened(): Promise<boolean> {
+    return this.page.url() === testUrls.sellersUrl;
+  }
+
+  async verifySellersPageLabel(): Promise<boolean> {
+    await this.sellersPageLabel.isVisible({ timeout: 3000 });
+    return (await this.getText(this.sellersPageLabel)).trim() === testLabels.sellersPageLabel;
   }
 }
 
