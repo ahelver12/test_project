@@ -11,12 +11,21 @@ export class BasePage {
     await this.page.goto(url);
   }
 
+  async open(url: string): Promise<void> {
+    await this.goto(url);
+  }
+
   async getTitle(): Promise<string> {
     return await this.page.title();
   }
 
   async getUrl(): Promise<string> {
     return this.page.url();
+  }
+
+  async getAttribute(selector: string | Locator, attribute: string): Promise<string | null> {
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    return await locator.getAttribute(attribute);
   }
 
   async click(selector: string | Locator): Promise<void> {

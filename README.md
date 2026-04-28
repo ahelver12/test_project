@@ -8,7 +8,7 @@ A comprehensive test automation framework built with Playwright and JavaScript/T
 ├── src/
 │   ├── pages/
 │   │   ├── BasePage.ts           # Base class for all page objects
-│   │   └── LoginPage.ts          # Example login page object
+│   │   └── SearchBooksPage.ts    # AbeBooks homepage page object
 │   ├── components/
 │   │   ├── BaseComponent.ts      # Base class for all components
 │   │   └── FormComponents.ts     # Reusable form components (Button, TextField, Checkbox)
@@ -20,8 +20,7 @@ A comprehensive test automation framework built with Playwright and JavaScript/T
 │       └── testData.ts           # Test data and constants
 ├── tests/
 │   └── e2e/
-│       ├── login.spec.ts         # Login page tests
-│       └── components.spec.ts    # Component interaction tests
+│       └── searchBooks.spec.ts    # AbeBooks homepage smoke test
 ├── BaseTest.ts                   # Base test class with fixtures
 ├── playwright.config.ts          # Playwright configuration
 ├── package.json                  # Dependencies and scripts
@@ -121,7 +120,7 @@ test.describe('My Tests', () => {
 
 ## Naming Conventions
 
-- **Classes**: PascalCase (e.g., `LoginPage`, `TextField`, `Logger`)
+- **Classes**: PascalCase (e.g., `SearchBooksPage`, `TextField`, `Logger`)
 - **Methods**: camelCase (e.g., `clickButton()`, `fillForm()`)
 - **Variables**: camelCase (e.g., `testUser`, `loginUrl`)
 - **Constants**: UPPER_SNAKE_CASE (in fixtures)
