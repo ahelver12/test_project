@@ -16,6 +16,20 @@ test.describe('AbeBooks Tests', () => {
     expect(await searchBooksPage.isOpened()).toBe(true);
   });
 
+  test('The user should verify homepage navigation labels are shown', async () => {
+    expect(await searchBooksPage.isOpened()).toBe(true);
+    const visibility = await searchBooksPage.getHomePageLabelsVisibility();
+    expect(visibility).toEqual({
+      advancedSearch: true,
+      browseCollections: true,
+      rareBooks: true,
+      artCollectables: true,
+      textbooks: true,
+      sellers: true,
+      startSelling: true,
+    });
+  });
+
   test('The user should find a book by search', async () => {
     expect(await searchBooksPage.isOpened()).toBe(true);
     await searchBooksPage.performSearch('Arthur Conan Doyle', 'The Lost World');
