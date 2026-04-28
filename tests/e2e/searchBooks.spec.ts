@@ -12,13 +12,13 @@ test.describe('AbeBooks Tests', () => {
   });
 
   test('The user should open AbeBooks homepage and verify it is opened', async () => {
-    await searchBooksPage.openHome();
+    await searchBooksPage.navigate('home');
     await preferencesPage.clickDecline();
     expect(await searchBooksPage.isOpened()).toBe(true);
   });
 
   test('The user should find a book by search', async () => {
-    await searchBooksPage.openHome();
+    await searchBooksPage.navigate('home');
     await preferencesPage.clickDecline();
     expect(await searchBooksPage.isOpened()).toBe(true);
     await searchBooksPage.fillAuthor('Arthur Conan Doyle');

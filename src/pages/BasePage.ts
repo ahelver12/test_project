@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { testUrls } from '../fixtures/testData';
 
 export class BasePage {
   readonly page: Page;
@@ -9,16 +10,9 @@ export class BasePage {
     this.logoLabel = this.page.locator('#logo .sr-only');
   }
 
-  async goto(url: string): Promise<void> {
+  async navigate(destination: 'home' | string): Promise<void> {
+    const url = destination === 'home' ? testUrls.abebooksBaseUrl : destination;
     await this.page.goto(url);
-  }
-
-  async open(url: string): Promise<void> {
-    await this.goto(url);
-  }
-
-  async openHome(): Promise<void> {
-    await this.open('https://www.abebooks.co.uk/');
   }
 
   async getTitle(): Promise<string> {
@@ -37,39 +31,41 @@ export class BasePage {
     return (await this.getText(this.logoLabel)).trim();
   }
 
+  private getLocator(selector: string | Locator): Locator {
+    return typeof selector === 'string' ? this.page.locator(selector) : selector;
+  }
+
+  private async actionOnElement<T>(selector: string | Locator, action: (loc: Locator, ...args: any[]) => Promise<T>, ...args: any[]): Promise<T> {
+    const loc = this.getLocator(selector);
+    return await action(loc, ...args);
+  }
+
   async getAttribute(selector: string | Locator, attribute: string): Promise<string | null> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    return await locator.getAttribute(attribute);
+    return this.actionOnElement(selector, (loc, attr) => loc.getAttribute(attr), attribute);
   }
 
   async click(selector: string | Locator): Promise<void> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    await locator.click();
+    return this.actionOnElement(selector, (loc) => loc.click());
   }
 
   async fill(selector: string | Locator, text: string): Promise<void> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    await locator.fill(text);
+    return this.actionOnElement(selector, (loc, txt) => loc.fill(txt), text);
   }
 
   async getText(selector: string | Locator): Promise<string> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    return await locator.textContent() || '';
+    return this.actionOnElement(selector, async (loc) => await loc.textContent() || '');
   }
 
   async isVisible(selector: string | Locator): Promise<boolean> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    return await locator.isVisible();
+    return this.actionOnElement(selector, (loc) => loc.isVisible());
   }
 
   async isEnabled(selector: string | Locator): Promise<boolean> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    return await locator.isEnabled();
+    return this.actionOnElement(selector, (loc) => loc.isEnabled());
   }
 
   async waitForElement(selector: string | Locator, timeout: number = 5000): Promise<void> {
-    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
-    await locator.waitFor({ timeout });
+    return this.actionOnElement(selector, (loc, t) => loc.waitFor({ timeout: t }), timeout);
   }
 
   async screenshot(path: string): Promise<void> {

@@ -1,5 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { testUrls } from '../fixtures/testData';
 
 export class SearchBooksPage extends BasePage {
   readonly authorInput: Locator;
@@ -32,6 +33,6 @@ export class SearchBooksPage extends BasePage {
   }
 
   async goToAdvancedSearch(): Promise<void> {
-    await this.goto('https://www.abebooks.co.uk/servlet/AdvancedSearch');
+    await this.navigate(testUrls.abebooksAdvancedSearch);
   }
 }
