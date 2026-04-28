@@ -36,4 +36,10 @@ test.describe('AbeBooks Tests', () => {
     await searchBooksPage.page.waitForSelector('text=The Lost World and Other Stories (Wordsworth Classics)', { timeout: 10000 });
     expect(await searchBooksPage.page.locator('text=The Lost World and Other Stories (Wordsworth Classics)').isVisible()).toBe(true);
   });
+
+  test('The user should navigate to Sellers page and verify it', async () => {
+    await searchBooksPage.clickOnSellers();
+    expect(await searchBooksPage.verifySellersPageOpened()).toBe(true);
+    expect(await searchBooksPage.verifySellersPageLabel()).toBe(true);
+  });
 });
